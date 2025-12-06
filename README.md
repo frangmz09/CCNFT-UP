@@ -1,66 +1,74 @@
-## Foundry
+# 🌾 CryptoCampo NFT - Tokenización de Activos Agrícolas
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+Este proyecto es una DApp (Aplicación Descentralizada) diseñada para la tokenización de bienes agrícolas (Real World Assets - RWA). Permite representar toneladas de granos (Soja, Maíz, Trigo) mediante NFTs, facilitando su comercio, inversión y liquidación en la Blockchain de Ethereum (Sepolia Testnet).
 
-Foundry consists of:
+El sistema utiliza un token **ERC20 (BUSD)** como moneda de pago y liquidez para todas las transacciones dentro del ecosistema.
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## Funcionalidades Principales
 
-## Documentation
+El contrato inteligente `CCNFT` implementa la siguiente lógica de negocio:
 
-https://book.getfoundry.sh/
+* **Compra (Buy):** Los usuarios pueden comprar NFTs pagando con BUSD. El contrato valida límites de compra y precios preestablecidos.
+* **Mercado Secundario (Trade):** Los poseedores de NFTs pueden ponerlos a la venta (`putOnSale`) y otros usuarios pueden comprarlos directamente en el contrato (`trade`), pagando una comisión (Fee) al protocolo.
+* **Reclamo/Liquidación (Claim):** El usuario puede "quemar" su NFT para recibir el valor subyacente del activo más un beneficio (`profitToPay`) en BUSD, retirando el activo de circulación.
+* **Gestión de Tarifas:** Sistema de *Fees* configurables para la compra y el intercambio, dirigidos a una *wallet* colectora.
+* **Seguridad:** Implementación de `ReentrancyGuard` y patrón `Ownable` para gestión administrativa.
 
-## Usage
+## Stack Tecnológico
 
-### Build
+* **Lenguaje:** Solidity `^0.8.19`
+* **Framework:** Foundry (Forge, Cast, Anvil)
+* **Estándares:** OpenZeppelin (ERC721Enumerable, ERC20, Ownable)
+* **Red de Despliegue:** Sepolia Testnet
+* **Automatización:** GNU Make
 
-```shell
-$ forge build
-```
+## Estructura del Proyecto
 
-### Test
+* `src/`: Contratos inteligentes (`CCNFT.sol`, `BUSD.sol`).
+* `test/`: Tests unitarios exhaustivos escritos en Solidity.
+* `script/`: Scripts de despliegue automatizado y verificación.
+* `Makefile`: Atajos para comandos de compilación y despliegue.
 
-```shell
-$ forge test
-```
+## Prerrequisitos
 
-### Format
+* [Foundry](https://book.getfoundry.sh/getting-started/installation) instalado.
+* Una billetera configurada con claves privadas (para despliegue).
+* Archivo `.env` configurado (ver ejemplo abajo).
 
-```shell
-$ forge fmt
-```
+## Instalación y Configuración
 
-### Gas Snapshots
+1.  **Clonar el repositorio:**
+    ```bash
+    git clone [https://github.com/TU_USUARIO/ProyectoFinalCCNFT.git](https://github.com/TU_USUARIO/ProyectoFinalCCNFT.git)
+    cd ProyectoFinalCCNFT
+    ```
 
-```shell
-$ forge snapshot
-```
+2.  **Instalar dependencias:**
+    ```bash
+    forge install
+    ```
 
-### Anvil
+3.  **Configurar variables de entorno:**
+    Crea un archivo `.env` en la raíz:
+    ```ini
+    PRIVATE_KEY=0x... (Tu clave privada)
+    SEPOLIA_RPC_URL=https://... (Tu URL RPC)
+    ETHERSCAN_API_KEY=... (Tu API Key)
+    ```
 
-```shell
-$ anvil
-```
+4.  **Compilar:**
+    ```bash
+    make build
+    ```
 
-### Deploy
+5.  **Correr Tests:**
+    ```bash
+    make test
+    ```
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+## Despliegue en Sepolia
 
-### Cast
+El proyecto cuenta con un script automatizado que despliega los contratos `BUSD` y `CCNFT`, configura los permisos iniciales, establece los precios y verifica el código en Etherscan.
 
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+```bash
+make deploy-sepolia
