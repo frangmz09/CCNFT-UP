@@ -39,7 +39,7 @@ El contrato inteligente `CCNFT` implementa la siguiente lógica de negocio:
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone [https://github.com/TU_USUARIO/ProyectoFinalCCNFT.git](https://github.com/TU_USUARIO/ProyectoFinalCCNFT.git)
+    git clone [https://github.com/frangmz09/CCNFT-UP.git](https://github.com/frangmz09/CCNFT-UP.git)
     cd ProyectoFinalCCNFT
     ```
 
@@ -51,9 +51,9 @@ El contrato inteligente `CCNFT` implementa la siguiente lógica de negocio:
 3.  **Configurar variables de entorno:**
     Crea un archivo `.env` en la raíz:
     ```ini
-    PRIVATE_KEY=0x... (Tu clave privada)
-    SEPOLIA_RPC_URL=https://... (Tu URL RPC)
-    ETHERSCAN_API_KEY=... (Tu API Key)
+    PRIVATE_KEY=0x... (Clave privada)
+    SEPOLIA_RPC_URL=https://... (URL RPC)
+    ETHERSCAN_API_KEY=... (API Key)
     ```
 
 4.  **Compilar:**
