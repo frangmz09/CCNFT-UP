@@ -10,7 +10,7 @@ contract DeployCCNFT is Script {
         // Leemos la clave privada del archivo .env
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 
-        // Empezamos la transmisión de transacciones (todo lo que siga se ejecuta on-chain)
+        // Empezamos la transmisión de transacciones
         vm.startBroadcast(deployerPrivateKey);
 
         // 1. Desplegar BUSD (Moneda de pago)
@@ -19,7 +19,7 @@ contract DeployCCNFT is Script {
         // 2. Desplegar CCNFT (Contrato principal)
         CCNFT ccnft = new CCNFT();
 
-        // 3. Configuración Inicial Básica (Opcional, pero recomendado para ahorrar pasos manuales)
+        // 3. Configuración Inicial Básica
         // Seteamos el token de pago
         ccnft.setFundsToken(address(busd));
         
@@ -32,10 +32,14 @@ contract DeployCCNFT is Script {
         ccnft.setMaxBatchCount(20);
         ccnft.setMaxValueToRaise(1000000 * 10**18);
 
-        // Seteamos direcciones (usamos la misma del deployer temporalmente o pon las reales)
+        // Seteamos direcciones (usamos la misma del deployer temporalmente)
         address myAddress = vm.addr(deployerPrivateKey);
         ccnft.setFundsCollector(myAddress);
         ccnft.setFeesCollector(myAddress);
+
+        // APROBACIÓN AUTOMÁTICA (SOLO PARA DEPLOYER)
+        // NOTA: En un entorno real de producción, cada Cliente debe realizar esta aprobación manualmente desde su billetera (o web) antes de poder comprar.
+        busd.approve(address(ccnft), 10000000 * 10 ** 18);
 
         vm.stopBroadcast();
     }
